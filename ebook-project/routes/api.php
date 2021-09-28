@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthorController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,4 +16,13 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/me', [AuthController::class, 'me']);
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::get('books', [BookController::class, 'index']);
+Route::post('books', [BookController::class, 'store']);
+Route::get('books/{id}', [BookController::class, 'show']);
+Route::put('books/{id}', [BookController::class, 'update']);
+Route::delete('books/{id}', [BookController::class, 'destroy']);
+Route::resource('authors', AuthorController::class);
